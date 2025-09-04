@@ -113,6 +113,7 @@ export function CredentialCard({
           <Button 
             variant="outline" 
             size="sm" 
+            className="flex-1"
             onClick={(e) => e.stopPropagation()}
           >
             <QrCode className="h-4 w-4 mr-2" />
@@ -121,6 +122,7 @@ export function CredentialCard({
           <Button 
             variant="ghost" 
             size="sm" 
+            className="flex-1"
             onClick={(e) => e.stopPropagation()}
           >
             <Share2 className="h-4 w-4 mr-2" />
@@ -129,6 +131,7 @@ export function CredentialCard({
           <Button 
             variant="ghost" 
             size="icon" 
+            className="shrink-0"
             onClick={(e) => e.stopPropagation()}
           >
             <MoreHorizontal className="h-4 w-4" />
