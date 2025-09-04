@@ -1,7 +1,9 @@
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { Badge } from "@/components/ui/badge"
+import { DocumentViewer } from "./document-viewer"
 import { 
   CreditCard, 
   QrCode, 
@@ -9,7 +11,8 @@ import {
   MoreHorizontal,
   Shield,
   Verified,
-  Calendar
+  Calendar,
+  Eye
 } from "lucide-react"
 
 interface CredentialCardProps {
@@ -31,6 +34,8 @@ export function CredentialCard({
   expiryDate,
   credentialId 
 }: CredentialCardProps) {
+  const [showViewer, setShowViewer] = useState(false)
+  
   const getStatusVariant = (status: string) => {
     switch (status) {
       case "verified": return "verified"
@@ -41,18 +46,24 @@ export function CredentialCard({
   }
 
   return (
-    <Card className="hover:shadow-elegant transition-all duration-300 border-primary/10">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-primary rounded-lg">
-              <CreditCard className="h-5 w-5 text-primary-foreground" />
+    <>
+      <Card 
+        className="hover:shadow-elegant transition-all duration-300 border-primary/10 cursor-pointer group" 
+        onClick={() => setShowViewer(true)}
+      >
+        <CardHeader className="pb-3">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-gradient-primary rounded-lg group-hover:shadow-glow transition-all duration-300">
+                <CreditCard className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <div>
+                <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                  {title}
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">Issued by {issuer}</p>
+              </div>
             </div>
-            <div>
-              <CardTitle className="text-lg">{title}</CardTitle>
-              <p className="text-sm text-muted-foreground">Issued by {issuer}</p>
-            </div>
-          </div>
           <StatusBadge variant={getStatusVariant(status)}>
             {status === "verified" && <Verified className="h-3 w-3 mr-1" />}
             {status.toUpperCase()}
@@ -87,19 +98,50 @@ export function CredentialCard({
         </div>
         
         <div className="flex space-x-2 pt-2">
-          <Button variant="outline" size="sm" className="flex-1">
-            <QrCode className="h-4 w-4 mr-2" />
-            QR Code
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex-1"
+            onClick={(e) => {
+              e.stopPropagation()
+              setShowViewer(true)
+            }}
+          >
+            <Eye className="h-4 w-4 mr-2" />
+            View Document
           </Button>
-          <Button variant="ghost" size="sm" className="flex-1">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={(e) => e.stopPropagation()}
+          >
+            <QrCode className="h-4 w-4 mr-2" />
+            QR
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={(e) => e.stopPropagation()}
+          >
             <Share2 className="h-4 w-4 mr-2" />
             Share
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={(e) => e.stopPropagation()}
+          >
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </div>
       </CardContent>
     </Card>
+    
+    <DocumentViewer 
+      open={showViewer}
+      onOpenChange={setShowViewer}
+      credential={{ title, issuer, type, status, issueDate, expiryDate, credentialId }}
+    />
+    </>
   )
 }
