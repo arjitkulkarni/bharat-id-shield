@@ -14,6 +14,7 @@ import {
   Calendar,
   Eye
 } from "lucide-react"
+import { useTranslations } from "@/lib/i18n"
 
 interface CredentialCardProps {
   title: string
@@ -35,6 +36,7 @@ export function CredentialCard({
   credentialId 
 }: CredentialCardProps) {
   const [showViewer, setShowViewer] = useState(false)
+  const t = useTranslations()
   
   const getStatusVariant = (status: string) => {
     switch (status) {
@@ -64,87 +66,87 @@ export function CredentialCard({
                 <p className="text-sm text-muted-foreground">Issued by {issuer}</p>
               </div>
             </div>
-          <StatusBadge variant={getStatusVariant(status)}>
-            {status === "verified" && <Verified className="h-3 w-3 mr-1" />}
-            {status.toUpperCase()}
-          </StatusBadge>
-        </div>
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Type:</span>
-          <Badge variant="outline">{type}</Badge>
-        </div>
-        
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Issue Date:</span>
-          <span className="flex items-center">
-            <Calendar className="h-3 w-3 mr-1" />
-            {issueDate}
-          </span>
-        </div>
-        
-        {expiryDate && (
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Expires:</span>
-            <span>{expiryDate}</span>
+            <StatusBadge variant={getStatusVariant(status)}>
+              {status === "verified" && <Verified className="h-3 w-3 mr-1" />}
+              {status === "verified" ? t.verified : status === "pending" ? t.pending : t.expired}
+            </StatusBadge>
           </div>
-        )}
+        </CardHeader>
         
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">ID:</span>
-          <span className="font-mono text-xs">{credentialId}</span>
-        </div>
-        
-        <div className="flex space-x-2 pt-2">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex-1"
-            onClick={(e) => {
-              e.stopPropagation()
-              setShowViewer(true)
-            }}
-          >
-            <Eye className="h-4 w-4 mr-2" />
-            View Document
-          </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex-1"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <QrCode className="h-4 w-4 mr-2" />
-            QR
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="flex-1"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Share2 className="h-4 w-4 mr-2" />
-            Share
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="shrink-0"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-    
-    <DocumentViewer 
-      open={showViewer}
-      onOpenChange={setShowViewer}
-      credential={{ title, issuer, type, status, issueDate, expiryDate, credentialId }}
-    />
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Type:</span>
+            <Badge variant="outline">{type}</Badge>
+          </div>
+          
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Issue Date:</span>
+            <span className="flex items-center">
+              <Calendar className="h-3 w-3 mr-1" />
+              {issueDate}
+            </span>
+          </div>
+          
+          {expiryDate && (
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Expires:</span>
+              <span>{expiryDate}</span>
+            </div>
+          )}
+          
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">ID:</span>
+            <span className="font-mono text-xs">{credentialId}</span>
+          </div>
+          
+          <div className="flex space-x-2 pt-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+              onClick={(e) => {
+                e.stopPropagation()
+                setShowViewer(true)
+              }}
+            >
+              <Eye className="h-4 w-4 mr-2" />
+              View Document
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <QrCode className="h-4 w-4 mr-2" />
+              QR
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="flex-1"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Share2 className="h-4 w-4 mr-2" />
+              Share
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="shrink-0"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+      
+      <DocumentViewer 
+        open={showViewer}
+        onOpenChange={setShowViewer}
+        credential={{ title, issuer, type, status, issueDate, expiryDate, credentialId }}
+      />
     </>
   )
 }

@@ -1,10 +1,14 @@
+import { useState } from "react"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { StatsOverview } from "@/components/dashboard/stats-overview"
 import { CredentialCard } from "@/components/dashboard/credential-card"
 import { SecurityPanel } from "@/components/dashboard/security-panel"
 import { OfflinePanel } from "@/components/dashboard/offline-panel"
+import { AddCredentialModal } from "@/components/dashboard/add-credential-modal"
+import { ExportModal } from "@/components/dashboard/export-modal"
 import { Button } from "@/components/ui/button"
 import { Plus, Download } from "lucide-react"
+import { useTranslations } from "@/lib/i18n"
 
 const sampleCredentials = [
   {
@@ -45,6 +49,10 @@ const sampleCredentials = [
 ]
 
 export default function Dashboard() {
+  const [isAddCredentialModalOpen, setIsAddCredentialModalOpen] = useState(false)
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false)
+  const t = useTranslations()
+
   return (
     <div className="min-h-screen bg-background">
       <DashboardHeader />
@@ -59,17 +67,25 @@ export default function Dashboard() {
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold">My Credentials</h2>
-                <p className="text-muted-foreground">Manage your verified digital identity credentials</p>
+                <h2 className="text-2xl font-bold">{t.myCredentials}</h2>
+                <p className="text-muted-foreground">{t.manageCredentials}</p>
               </div>
               <div className="flex space-x-2">
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setIsExportModalOpen(true)}
+                >
                   <Download className="h-4 w-4 mr-2" />
-                  Export
+                  {t.export}
                 </Button>
-                <Button variant="hero" size="sm">
+                <Button 
+                  variant="hero" 
+                  size="sm"
+                  onClick={() => setIsAddCredentialModalOpen(true)}
+                >
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Credential
+                  {t.addCredential}
                 </Button>
               </div>
             </div>
@@ -88,6 +104,17 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <AddCredentialModal 
+        open={isAddCredentialModalOpen}
+        onOpenChange={setIsAddCredentialModalOpen}
+      />
+
+      <ExportModal 
+        open={isExportModalOpen}
+        onOpenChange={setIsExportModalOpen}
+        credentials={sampleCredentials}
+      />
     </div>
   )
 }

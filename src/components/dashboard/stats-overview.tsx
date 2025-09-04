@@ -8,39 +8,42 @@ import {
   Clock,
   Zap
 } from "lucide-react"
-
-const stats = [
-  {
-    title: "Active Credentials",
-    value: "4",
-    description: "Verified and ready",
-    icon: CreditCard,
-    color: "text-primary"
-  },
-  {
-    title: "Security Score",
-    value: "97%",
-    description: "Excellent protection",
-    icon: Shield,
-    color: "text-success"
-  },
-  {
-    title: "Verifications",
-    value: "23",
-    description: "This month",
-    icon: CheckCircle,
-    color: "text-accent"
-  },
-  {
-    title: "Trust Score",
-    value: "A+",
-    description: "Based on activity",
-    icon: TrendingUp,
-    color: "text-success"
-  }
-]
+import { useTranslations } from "@/lib/i18n"
 
 export function StatsOverview() {
+  const t = useTranslations()
+  
+  const stats = [
+    {
+      title: t.totalCredentials,
+      value: "4",
+      description: t.verifiedCredentials,
+      icon: CreditCard,
+      color: "text-primary"
+    },
+    {
+      title: t.securityScore,
+      value: "97%",
+      description: t.active,
+      icon: Shield,
+      color: "text-success"
+    },
+    {
+      title: "Verifications",
+      value: "23",
+      description: "This month",
+      icon: CheckCircle,
+      color: "text-accent"
+    },
+    {
+      title: "Trust Score",
+      value: "A+",
+      description: "Based on activity",
+      icon: TrendingUp,
+      color: "text-success"
+    }
+  ]
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat, index) => (

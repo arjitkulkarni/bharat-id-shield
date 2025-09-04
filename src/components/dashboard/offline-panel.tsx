@@ -11,15 +11,18 @@ import {
   CheckCircle,
   Timer
 } from "lucide-react"
+import { useTranslations } from "@/lib/i18n"
 
 export function OfflinePanel() {
+  const t = useTranslations()
+  
   return (
     <Card className="border-accent/20 bg-gradient-to-br from-accent/5 to-transparent">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center space-x-2">
             <WifiOff className="h-5 w-5 text-accent" />
-            <span>Offline Capabilities</span>
+            <span>{t.offlineMode}</span>
           </CardTitle>
           <StatusBadge variant="info">Ready</StatusBadge>
         </div>
@@ -76,11 +79,11 @@ export function OfflinePanel() {
           
           <div className="space-y-2 text-sm">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Credentials cached:</span>
+              <span className="text-muted-foreground">{t.credentialsCached}:</span>
               <span className="font-medium">4 of 5</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Last backup:</span>
+              <span className="text-muted-foreground">{t.lastBackup}:</span>
               <span className="font-medium">2 hours ago</span>
             </div>
             <div className="flex items-center justify-between">
@@ -104,7 +107,7 @@ export function OfflinePanel() {
           
           <Button variant="outline" size="sm" className="w-full">
             <RefreshCw className="h-4 w-4 mr-2" />
-            Force Sync Now
+            {t.syncNow}
           </Button>
         </div>
       </CardContent>
